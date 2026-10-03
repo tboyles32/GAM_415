@@ -52,6 +52,10 @@ protected:
 	virtual void BeginPlay();
 
 public:
+	/* bool setup for portal materials */
+	UPROPERTY(EditAnywhere)
+		bool isteleporting; 
+
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
