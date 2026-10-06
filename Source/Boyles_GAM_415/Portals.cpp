@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
+class APortals; 
 APortals::APortals()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -20,11 +21,12 @@ APortals::APortals()
 	// setup the Scene Capture and the Attachment and the capture is attached to the mesh
 	sceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>("Capture"); 
 
-	RootComponent = boxComp; 
+	rootArrow = CreateDefaultSubobject<UArrowComponent>("Root Arrow"); // Create Default for Root Arrow 
 
+	RootComponent = boxComp; // Spawn Component  
 	mesh->SetupAttachment(boxComp); // mesh wil be attached to the box Component 
-	sceneCapture->SetupAttachment(mesh);
-
+	sceneCapture->SetupAttachment(mesh); //Setup the Attachment for the scene capture 
+	rootArrow->SetupAttachment(RootComponent); // Get Spawn for the root component 
 
 	// this will disable the collision to the mesh 
 	mesh->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -38,6 +40,11 @@ void APortals::BeginPlay()
 	// make sure that the AddDynamic is assign to the void class 
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &APortals::OnOverlapBegin);
 	mesh->SetHiddenInSceneCapture(true); 
+
+	// this will disable shadows in the mesh, the b is a boolean 
+	//mesh->bCastStaticShadow(false);
+	//mesh->bCastDynamicShadow(false);
+
 
 	if (Mat)
 	{
@@ -66,7 +73,7 @@ void APortals::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Other
 			if (!playerChar->isteleporting) // Checking if isteleporting is false 
 			{
 				playerChar->isteleporting = true; //set playerChar is true, if the bool is false 
-				FVector loc = OtherPortal->GetActorLocation(); 
+				FVector loc = OtherPortal->rootArrow->GetComponentLocation(); //Where ever my root arrow is located, the character will teleport at
 				playerChar->SetActorLocation(loc); // infinite loop that will crash the engine, so we're setting the character's location 
 
 				FTimerHandle TimerHandle; 
@@ -92,10 +99,10 @@ void APortals::UpdatePortals()
 
 	FVector Location = this->GetActorLocation() - OtherPortal->GetActorLocation(); //It's gonna get the difference from the ActorPortal and the ActorLocation
 	FVector camLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetTransformComponent()->GetComponentLocation(); // 0 is the Players Index, add #include "Kismet/GameplayStatics.h" to use the camera 
-	FRotator camLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetTransformComponent()->GetComponentRotation(); // Allow the camera to rotate or O in 
+	FRotator CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetTransformComponent()->GetComponentRotation(); // Allow the camera to rotate or O in 
 	FVector CombinedLocation = camLocation + Location; // Adding the camlocation to the Location 
 
-	sceneCapture->SetWorldLocationAndRotation(CombinedLocation, camLocation);
+	sceneCapture->SetWorldLocationAndRotation(CombinedLocation, CameraLocation);
 
 
 }

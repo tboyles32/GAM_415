@@ -7,6 +7,7 @@
 #include "Components/SceneCaptureComponent2D.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Components/BoxComponent.h"
+#include "Components/ArrowComponent.h"
 #include "Portals.generated.h"
 
 /*Allows you access the Player Character, and local variables to transfer "Set Player Character to another function"*/
@@ -38,8 +39,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USceneCaptureComponent2D* sceneCapture;
 
+	// Setup for the render Target for the portals 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UTextureRenderTarget2D* renderTarget;
+
+	// for the root Arrow 
+	UPROPERTY(EditAnywhere)
+		UArrowComponent* rootArrow; 
+
 
 	UPROPERTY(EditAnywhere) // its for teleport
 		UBoxComponent* boxComp;
@@ -47,7 +54,7 @@ public:
 
 	// So the Teleportation is work properly 
 	UPROPERTY(EditAnywhere)
-		APortal* OtherPortal;
+		APortals* OtherPortal;
 
 	UPROPERTY(EditAnywhere)
 		UMaterialInterface* Mat;
