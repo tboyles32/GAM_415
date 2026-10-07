@@ -45,8 +45,7 @@ public:
 		float radius;
 
 	UPROPERTY(EditAnywhere)
-		float Depth;
-
+		FVector Depth;
 
 
 protected:
