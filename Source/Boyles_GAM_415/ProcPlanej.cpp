@@ -23,9 +23,13 @@ void AProcPlanej::BeginPlay()
 	
 }
 
+//Declaration for AProcPlanej::PostActorCreated()
+
 void AProcPlanej::PostActorCreated()
 {
 	Super::PostActorCreated();
+
+	// if statement for PlaneMat UProperty, with the procMesh Material is set to O ,and PlaneMat property  
 
 	CreateMesh(); 
 	if (PlaneMat)
@@ -34,9 +38,12 @@ void AProcPlanej::PostActorCreated()
 	}
 }
 
+//Declaration for AProcPlanej:: PostLoad()
 void AProcPlanej::PostLoad()
 {
 	Super::PostLoad();
+
+	// if statement for PlaneMat UProperty, with the procMesh Material is set to O ,and PlaneMat property  
 
 	CreateMesh();
 	if (PlaneMat)
@@ -52,8 +59,12 @@ void AProcPlanej::Tick(float DeltaTime)
 
 }
 
+//Declaration for AProcPlanej::CreateMeshs()
+
 void AProcPlanej::CreateMesh()
 {
+	// This will create a Mesh Section for the following Meshes
+
 	procMesh->CreateMeshSection(0, Vertices, Triangles, TArray<FVector>(), UV0, TArray<FColor>(), TArray<FProcMeshTangent>(), true);
 
 }

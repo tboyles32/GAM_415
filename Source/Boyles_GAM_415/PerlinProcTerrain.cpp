@@ -12,7 +12,7 @@ APerlinProcTerrain::APerlinProcTerrain()
 	PrimaryActorTick.bCanEverTick = false;
 
 	
-	//ProcMesh
+	//ProcMesh Setup for Mesh Components 
 	ProcMesh = CreateDefaultSubobject<UProceduralMeshComponent>("Proc Mesh"); 
 	ProcMesh->SetupAttachment(GetRootComponent());
 
@@ -23,9 +23,11 @@ void APerlinProcTerrain::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// This will create Vertices and Triangles 
 	CreateVertices();
 	CreateTriangles();
 
+	// Create Sections for my Mesh 
 	ProcMesh->CreateMeshSection(sectionID, Vertices, Triangles, Normals, UV0 ,UpVertexColors, TArray<FProcMeshTangent>(), true); 
 	ProcMesh->SetMaterial(0, Mat); 
 }
@@ -40,6 +42,7 @@ void APerlinProcTerrain::Tick(float DeltaTime)
 
 void APerlinProcTerrain::AlterMesh(FVector impactPoint)
 {
+	// If statment for Vertices to get Actor locations 
 	for (int i = 0; i < Vertices.Num(); i++)
 	{
 		FVector tempVector = impactPoint - this->GetActorLocation();
@@ -55,6 +58,7 @@ void APerlinProcTerrain::AlterMesh(FVector impactPoint)
 
 void APerlinProcTerrain::CreateVertices()
 {
+	//My int statement for the Noise Scale 
 	for (int X = 0; X <= XSize; X++)
 	{
 		for (int Y = 0; Y <= YSize; Y++)
@@ -70,6 +74,7 @@ void APerlinProcTerrain::CreateVertices()
 
 void APerlinProcTerrain::CreateTriangles()
 {
+	// IF statement for Vertices for Triangles 
 	int Vertex = 0; 
 
 	for (int X = 0; X < XSize; X++)

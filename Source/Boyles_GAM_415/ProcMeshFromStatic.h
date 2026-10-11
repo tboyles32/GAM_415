@@ -28,7 +28,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
+	 // Vectors of Vertices 
 	UPROPERTY(EditAnyWhere)
 		TArray<FVector> Vertices;
 
